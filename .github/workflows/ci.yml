@@ -30,11 +30,14 @@ jobs:
       env:
         NODE_ENV: production
       volumes:
-        - ./:/build
+        - ${{ github.workspace }}:/build
       options: --cpus 1
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      
+      - name: cd build
+        run: cd /build
 
       - name: run build
         run: npm ci
