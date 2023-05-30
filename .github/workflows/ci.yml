@@ -31,7 +31,6 @@ jobs:
         NODE_ENV: production
       volumes:
         - ${{ github.workspace }}:/build
-      options: --cpus 1
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -41,3 +40,10 @@ jobs:
 
       - name: run build
         run: npm ci
+
+      - name: Archive production artifacts (dist folder)
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: |
+            dist
