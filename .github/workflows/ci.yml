@@ -44,12 +44,12 @@ jobs:
       - name: run build
         run: npm run build
 
-      - name: Archive production artifacts (dist folder)
+      - name: Archive production artifacts (github-pages folder)
         uses: actions/upload-artifact@v3
         with:
-          name: dist
+          name: github-pages
           path: |
-            dist
+            github-pages
 
   # Deploy job
   deploy:
