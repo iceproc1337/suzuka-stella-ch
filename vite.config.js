@@ -13,6 +13,7 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: 'github-pages',
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'index.html'),
