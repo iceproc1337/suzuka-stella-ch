@@ -38,8 +38,11 @@ jobs:
       - name: cd build
         run: cd /build
 
-      - name: run build
+      - name: install dependencies
         run: npm ci
+        
+      - name: run build
+        run: npm run build
 
       - name: Archive production artifacts (dist folder)
         uses: actions/upload-artifact@v3
