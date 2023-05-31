@@ -10,6 +10,16 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/en',
+      name: 'homeen',
+      component: HomeView
+    },
+    {
+      path: '/ja',
+      name: 'homeja',
+      component: HomeView
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

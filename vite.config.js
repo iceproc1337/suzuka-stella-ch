@@ -12,14 +12,5 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  build: {
-    rollupOptions: {
-      input: {
-        'index': resolve(__dirname, 'index.html'),
-        'en': resolve(__dirname, 'en/index.html'),
-        'ja': resolve(__dirname, 'ja/index.html'),
-      }
-    }
   }
 })
