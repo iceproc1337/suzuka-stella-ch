@@ -1,0 +1,6 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://suzuka.stellach.com/sitemap.xml
+Sitemap: https://suzuka.stellach.com/en/sitemap.xml
+Sitemap: https://suzuka.stellach.com/ja/sitemap.xml
