@@ -8,7 +8,7 @@
       <div class="navbar-brand d-flex justify-content-center align-items-center m-0 p-0">
         <a class="btn btn-light py-1 px-2 me-2 h-100 rounded-0 d-flex justify-content-center align-items-center" href=".">
           <div class="rounded-circle" href="#">
-            <img src="@/assets/img/suzucastella.webp" height="48" width="48" class="rounded-5" />
+            <img src="@/assets/img/suzu-castella.webp" alt="pixelated suzu castella icon" height="48" width="48" class="rounded-5" />
           </div>
           <span class="ms-2 fs-5 font-weight-bold serif bold-600">Suzuka Stella</span>
         </a>
@@ -54,10 +54,10 @@
     <div id="home" class="d-flex w-100 justify-content-center flex-column">
       <div class="container fluid">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
-          <div class="col d-flex justify-content-center">
-            <img src="@/assets/img/full-body.webp" style="max-width: 100%; object-fit: contain;" />
+          <div class="col d-flex justify-content-center" style="flex-basis: 1;">
+            <img src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella" style="max-width: 100%; object-fit: contain;" />
           </div>
-          <div class="col">
+          <div class="col" style="flex-basis: 1;">
             <div class="text-center pt-2 serif bold-600">
               <div class="fs-1">Suzuka Stella</div>
               <div class="fs-5">鈴花ステラ🔔</div>
@@ -83,7 +83,7 @@
             </div>
             <hr class="my-2" />
             <div class="d-flex justify-content-center">
-              <img src="@/assets/img/stella-live.webp" />
+              <img src="@/assets/img/suzuka-stella-live.webp" alt="one of the youtube video preview of suzuka stella live video stream" />
             </div>
             <div class="container text-center mt-2">
               <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
@@ -106,7 +106,7 @@
 
 <style>
 .full-body-bg {
-  background-image: url("@/assets/img/full-body.webp");
+  background-image: url("@/assets/img/suzuka-stella-full-body-portrait.webp");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100%;
