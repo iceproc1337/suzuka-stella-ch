@@ -8,9 +8,9 @@
       <div class="navbar-brand d-flex justify-content-center align-items-center m-0 p-0">
         <a class="btn btn-light py-1 px-2 me-2 h-100 rounded-0 d-flex justify-content-center align-items-center" href=".">
           <div class="rounded-circle" href="#">
-            <img src="@/assets/img/suzucastella.png" height="48" width="48" class="rounded-5" />
+            <img src="@/assets/img/suzucastella.webp" height="48" width="48" class="rounded-5" />
           </div>
-          <span class="ms-2 fs-5 font-weight-bold">Suzuka Stella</span>
+          <span class="ms-2 fs-5 font-weight-bold serif bold-600">Suzuka Stella</span>
         </a>
       </div>
       <button class="navbar-toggler p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
@@ -55,10 +55,10 @@
       <div class="container fluid">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
           <div class="col d-flex justify-content-center">
-            <img src="@/assets/img/full-body.png" style="max-width: 100%; object-fit: contain;" />
+            <img src="@/assets/img/full-body.webp" style="max-width: 100%; object-fit: contain;" />
           </div>
           <div class="col">
-            <div class="text-center pt-2">
+            <div class="text-center pt-2 serif bold-600">
               <div class="fs-1">Suzuka Stella</div>
               <div class="fs-5">鈴花ステラ🔔</div>
             </div>
@@ -106,7 +106,7 @@
 
 <style>
 .full-body-bg {
-  background-image: url("@/assets/img/full-body.png");
+  background-image: url("@/assets/img/full-body.webp");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100%;
