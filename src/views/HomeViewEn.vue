@@ -1,4 +1,8 @@
 <script setup>
+import Description from './HomeView/en/Description.vue';
+import Introduction from './HomeView/en/Introduction.vue';
+import Profile from './HomeView/en/Profile.vue';
+
 </script>
 
 <template>
@@ -17,23 +21,14 @@
               <div class="fs-5">鈴花ステラ🔔</div>
             </div>
             <div class="fs-4">
-              <div>「Konsute～！」</div>
-              <div>I’m Suzu Castella’s virtual fairy.</div>
-              <div>I've come to your world because I want to do gaming and singing.</div>
+              <Introduction></Introduction>
             </div>
             <hr class="my-2" />
             <div class="fs-5">
-              <div>She opened her Twitter account on 23 April 2020 while her YouTube channel was created on 26 January
-                2021. Her introduction video was uploaded on 5 February 2021.</div>
-              <div>Stella graduated from Megalight Production due to physical health problems. She held her farewell
-                stream at 1 April 2022.</div>
+              <Description></Description>
             </div>
             <div class="fs-6 mt-2">
-              <div>【Debut date】2021/2/5</div>
-              <div>【Birthday】December 20</div>
-              <div>【Height】154cm</div>
-              <div>【Likes】Singing, anime, games, drums, macaroons, shrimps, beef tongue</div>
-              <div>【Dislikes】Carrots</div>
+              <Profile></Profile>
             </div>
             <hr class="my-2" />
             <div class="d-flex justify-content-center">
