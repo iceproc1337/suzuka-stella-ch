@@ -2,60 +2,14 @@
 </script>
 
 <template>
-  <div style="height: 64px;" class="d-block"></div>
-  <nav id="navbar" class="navbar fixed-top navbar-expand-lg bg-white nav-shadow m-0 p-0">
-    <div class="container-fluid p-0 align-items-stretch">
-      <div class="navbar-brand d-flex justify-content-center align-items-center m-0 p-0">
-        <a class="btn btn-light py-1 px-2 me-2 h-100 rounded-0 d-flex justify-content-center align-items-center" href=".">
-          <div class="rounded-circle" href="#">
-            <img src="@/assets/img/suzu-castella.webp" alt="pixelated suzu castella icon" height="48" width="48" class="rounded-5" />
-          </div>
-          <span class="ms-2 fs-5 font-weight-bold serif bold-600">Suzuka Stella</span>
-        </a>
-      </div>
-      <button class="navbar-toggler p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
-        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-    <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarSupportedContent">
-        <!--
-        <ul class="navbar-nav bg-white justify-content-center align-items-center fs-5">
-          <li class="nav-item nav-item-fixed-width">
-            <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
-              aria-current="page" href="#home">Home</a>
-          </li>
-          <li class="nav-item nav-item-fixed-width">
-            <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
-              href="#video">Video</a>
-              </li>
-            </ul>
-        -->
-        <hr class="m-0" />
-        <div class="d-flex align-items-center justify-content-center ms-auto me-2">
-          <div class="dropdown fixed-width-dropdown my-2">
-            <a class="btn dropdown-toggle fixed-width-dropdown" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="bi bi-globe"></i> 日本語
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end text-center">
-              <li><a class="dropdown-item" href="/ja/">日本語</a></li>
-              <li><a class="dropdown-item" href="/en/">English</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
   <div class="full-body-bg"></div>
-  <div data-bs-spy="scroll" data-bs-target="#navbar" data-bs-smooth-scroll="true" class="scrollspy-example rounded-2"
-    tabindex="0">
+  <div class="rounded-2 h-100 overflow-y-scroll">
     <div id="home" class="d-flex w-100 justify-content-center flex-column">
       <div class="container fluid">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
           <div class="col d-flex justify-content-center" style="flex-basis: 1;">
-            <img src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella" style="max-width: 100%; object-fit: contain;" />
+            <img src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella"
+              style="max-width: 100%; object-fit: contain;" />
           </div>
           <div class="col" style="flex-basis: 1;">
             <div class="text-center pt-2 serif bold-600">
@@ -83,7 +37,8 @@
             </div>
             <hr class="my-2" />
             <div class="d-flex justify-content-center">
-              <img src="@/assets/img/suzuka-stella-live.webp" alt="one of the youtube video preview of suzuka stella live video stream" />
+              <img src="@/assets/img/suzuka-stella-live.webp"
+                alt="one of the youtube video preview of suzuka stella live video stream" />
             </div>
             <div class="container text-center mt-2">
               <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
@@ -118,30 +73,6 @@
   top: 0;
   left: 0;
   right: 0;
-}
-
-.fixed-width-dropdown {
-  width: 120px;
-}
-
-.fixed-width-dropdown .dropdown-menu {
-  width: 120px;
-  --bs-dropdown-min-width: 120px;
-}
-
-.nav-shadow {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-}
-
-.nav-item-fixed-width {
-  width: 80px;
-}
-
-#navbarSupportedContent .nav-link,
-#navbarSupportedContent .nav-item,
-#navbarSupportedContent .btn {
-  width: 100%;
-  margin: 0 !important;
 }
 
 .section-header {
