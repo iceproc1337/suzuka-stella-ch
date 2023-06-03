@@ -12,8 +12,8 @@ import Profile from './HomeView/en/Profile.vue';
       <div class="container fluid">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
           <div class="col d-flex justify-content-center" style="flex-basis: 1;">
-            <img src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella"
-              width="724" height="980" style="max-width: 100%; object-fit: contain;" />
+            <img class="w-100 h-auto" src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella"
+              width="724" height="980" />
           </div>
           <div class="col" style="flex-basis: 1;">
             <div class="text-center pt-2 serif bold-600">
