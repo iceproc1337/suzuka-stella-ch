@@ -13,7 +13,7 @@ import Profile from './HomeView/ja/Profile.vue';
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
           <div class="col d-flex justify-content-center" style="flex-basis: 1;">
             <img src="@/assets/img/suzuka-stella-full-body-portrait.webp" alt="full body portrait of Suzuka Stella"
-              style="max-width: 100%; object-fit: contain;" />
+              width="724" height="980" style="max-width: 100%; object-fit: contain;" />
           </div>
           <div class="col" style="flex-basis: 1;">
             <div class="text-center pt-2 serif bold-600">
@@ -33,7 +33,8 @@ import Profile from './HomeView/ja/Profile.vue';
             <hr class="my-2" />
             <div class="d-flex justify-content-center">
               <img src="@/assets/img/suzuka-stella-live.webp"
-                alt="one of the youtube video preview of suzuka stella live video stream" />
+                alt="one of the youtube video preview of suzuka stella live video stream" 
+                width="320" height="180" />
             </div>
             <div class="container text-center mt-2">
               <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1 row-cols-xl-2">
