@@ -22,6 +22,7 @@ import { RouterLink, RouterView } from 'vue-router'
       </button>
 
       <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarSupportedContent">
+        <!--
         <ul class="navbar-nav bg-white justify-content-center align-items-center fs-5">
           <li class="nav-item nav-item-fixed-width">
             <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
@@ -32,6 +33,7 @@ import { RouterLink, RouterView } from 'vue-router'
               href="/">Intro</a>
           </li>
         </ul>
+        -->
         <hr class="m-0" />
         <div class="d-flex align-items-center justify-content-center ms-auto me-2">
           <div class="dropdown fixed-width-dropdown my-2">
