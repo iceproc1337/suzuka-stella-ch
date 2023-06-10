@@ -22,6 +22,7 @@ export default defineConfig({
           Vue: "Vue",
           VueRouter: "VueRouter",
           VueDemi: "VueDemi",
+          VueI18n: "VueI18n",
           Pinia: "Pinia"
         }
       }

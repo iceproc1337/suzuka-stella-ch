@@ -1,5 +1,7 @@
 <script setup>
-let { RouterLink, RouterView } = VueRouter;
+import { useI18nStore } from './stores/i18n';
+const i18nStore = useI18nStore();
+let { RouterView } = VueRouter;
 
 </script>
 
@@ -13,34 +15,34 @@ let { RouterLink, RouterView } = VueRouter;
             <img src="@/assets/img/suzu-castella.webp" alt="pixelated suzu castella icon" height="48" width="48"
               class="rounded-5" />
           </div>
-          <span class="ms-2 fs-5 font-weight-bold serif bold-600">Suzuka Stella</span>
+          <span class="ms-2 fs-5 font-weight-bold serif bold-600">{{i18nStore.t("app.suzuka.stella")}}</span>
         </a>
       </div>
       <button class="navbar-toggler p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
-        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarSupportedContent">
-        <!--
+    <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarSupportedContent">
+      <!--
         <ul class="navbar-nav bg-white justify-content-center align-items-center fs-5">
           <li class="nav-item nav-item-fixed-width">
             <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
               aria-current="page" href="/live">Live</a>
-          </li>
-          <li class="nav-item nav-item-fixed-width">
-            <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
-              href="/">Intro</a>
-          </li>
-        </ul>
-        -->
+            </li>
+            <li class="nav-item nav-item-fixed-width">
+              <a class="nav-link btn btn-light px-2 mx-1 rounded-0 d-flex justify-content-center align-items-center"
+                href="/">Intro</a>
+            </li>
+          </ul>
+          -->
         <hr class="m-0" />
         <div class="d-flex align-items-center justify-content-center ms-auto me-2">
-          <div class="dropdown fixed-width-dropdown my-2">
+          <div class="dropdown fixed-width-dropdown my-2" style="width: 110px;">
             <a class="btn dropdown-toggle fixed-width-dropdown" href="#" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-              <i class="bi bi-globe"></i> 日本語
+              <i class="bi bi-globe"></i> {{ i18nStore.t("app.lang") }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end text-center">
               <li><a class="dropdown-item" href="/ja/">日本語</a></li>

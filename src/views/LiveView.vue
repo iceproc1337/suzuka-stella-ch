@@ -1,6 +1,5 @@
 <script setup>
-
-import { onMounted } from 'vue';
+let { onMounted } = Vue;
 
 onMounted(() => {
   const player = new Plyr('#player', {
@@ -64,8 +63,7 @@ onMounted(() => {
         <div class="d-flex flex-column bg-warning rounded" style="height: 640px;">
           <div class="d-flex flex-shrink-0 justify-content-between">
             <div class="dropdown">
-              <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Live chat replay
               </button>
               <ul class="dropdown-menu">
