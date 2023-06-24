@@ -18,7 +18,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         globals: {
-          Plyr: 'Plyr',
+          videojs: 'video-js',
           Vue: "Vue",
           VueRouter: "VueRouter",
           VueDemi: "VueDemi",
