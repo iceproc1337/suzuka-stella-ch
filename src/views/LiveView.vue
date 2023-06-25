@@ -1,21 +1,36 @@
 <script setup>
+import HomeView from "./HomeView.vue";
+import { useI18nStore } from "@/stores/i18n";
+
+const i18nStore = useI18nStore();
+i18nStore.setLang("en");
+
 let { onMounted } = Vue;
 
 onMounted(() => {
   //Now setting up Player
-  var player = videojs('player');
+  var player = videojs('player', {
+    muted: true
+  });
   player.ready(function () {
     var myPlayer = this;
     myPlayer.src({ type: 'video/youtube', src: 'https://www.youtube.com/watch?v=lv5Sw-VtmzM' });
     myPlayer.controlBar.progressControl.disable()
   });
   let isCurrentTimeLoaded = false;
-  player.on('loadstart', function () {
+  let startTime = new Date();
+  startTime.setHours(0, 0);
+
+  player.on('play', function () {
     var myPlayer = this;
-    if ( !isCurrentTimeLoaded ) {
+    if (!isCurrentTimeLoaded) {
       isCurrentTimeLoaded = true;
-      myPlayer.currentTime(400);
+      myPlayer.currentTime((new Date() - startTime) / 1000);
+      myPlayer.muted(false);
     }
+  });
+  player.on('pause', function () {
+    isCurrentTimeLoaded = false;
   });
 
   var Button = videojs.getComponent('Button');
@@ -40,6 +55,25 @@ onMounted(() => {
     }
   }
 
+  class CurrentTimeButton extends Button {
+    constructor(player, options) {
+      super(player, options);
+    }
+    createEl(tag = 'button', props = {}, attributes = {}) {
+      let el = super.createEl(tag, props, attributes);
+      setInterval(function () {
+        let currentTime = new Date();
+        let hours = currentTime.getHours();
+        let minutes = currentTime.getMinutes();
+        let paddedHours = String(hours).padStart(2, '0');
+        let paddedMinutes = String(minutes).padStart(2, '0');
+
+        el.innerHTML = `${paddedHours}:${paddedMinutes}`;
+      }, 1000);
+      return el;
+    }
+  }
+
   class AutoPlayButton extends Button {
     constructor(player, options) {
       super(player, options);
@@ -55,9 +89,10 @@ onMounted(() => {
       // this.controlText("Live");
       this.addClass('vjs-icon-caption');
       this.addClass('material-symbols-outlined');
+      this.disable();
     }
   }
-  
+
   class SettingsButton extends Button {
     constructor(player, options) {
       super(player, options);
@@ -72,6 +107,7 @@ onMounted(() => {
       // this.controlText("Live");
       this.addClass('vjs-icon-mini-player');
       this.addClass('material-symbols-outlined');
+      this.disable();
     }
   }
 
@@ -81,6 +117,7 @@ onMounted(() => {
       // this.controlText("Live");
       this.addClass('vjs-icon-theater');
       this.addClass('material-symbols-outlined');
+      this.disable();
     }
   }
 
@@ -98,19 +135,21 @@ onMounted(() => {
   player.getChild('controlBar').addChild('nextButton', {}, 1);
   videojs.registerComponent('liveButton', LiveButton);
   player.getChild('controlBar').addChild('LiveButton', {}, 6);
+  videojs.registerComponent('currentTimeButton', CurrentTimeButton);
+  player.getChild('controlBar').addChild('CurrentTimeButton', {}, 7);
 
   videojs.registerComponent('autoPlayButton', AutoPlayButton);
-  player.getChild('controlBar').addChild('AutoPlayButton', {}, 11);  
+  player.getChild('controlBar').addChild('AutoPlayButton', {}, 12);
   videojs.registerComponent('captionButton', CaptionButton);
-  player.getChild('controlBar').addChild('CaptionButton', {}, 12); 
+  player.getChild('controlBar').addChild('CaptionButton', {}, 13);
   videojs.registerComponent('settingsButton', SettingsButton);
-  player.getChild('controlBar').addChild('SettingsButton', {}, 13);
+  player.getChild('controlBar').addChild('SettingsButton', {}, 14);
   videojs.registerComponent('miniPlayerButton', MiniPlayerButton);
-  player.getChild('controlBar').addChild('MiniPlayerButton', {}, 14);
+  player.getChild('controlBar').addChild('MiniPlayerButton', {}, 15);
   videojs.registerComponent('theaterButton', TheaterButton);
-  player.getChild('controlBar').addChild('TheaterButton', {}, 15);
-  
-  
+  player.getChild('controlBar').addChild('TheaterButton', {}, 16);
+
+
 });
 
 </script>
@@ -185,17 +224,17 @@ onMounted(() => {
           </div>
           <div class="superchat-row overflow-x-scroll flex-shrink-0 p-1">
             <button type="button" class="btn btn-primary rounded-pill py-1 ps-1 pe-2 ms-2">
-              <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24" > AU$100.00
+              <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24"> AU$100.00
             </button>
             <button type="button" class="btn btn-primary rounded-pill py-1 ps-1 pe-2 ms-2">
-              <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24" > AU$100.00
+              <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24"> AU$100.00
             </button>
           </div>
           <div class="chat-list flex-grow-1 overflow-y-scroll ps-2">
             <div class="d-flex flex-row align-items-center ps-2 my-1" v-for="i in 20">
-              <img class="rounded-5 bg-white me-2" src="@/assets/logo.svg" width="24" height="24" >
+              <img class="rounded-5 bg-white me-2" src="@/assets/logo.svg" width="24" height="24">
               <span class="">AU$100.00</span>
-              <img class="me-2" src="@/assets/logo.svg" width="18" height="18" >
+              <img class="me-2" src="@/assets/logo.svg" width="18" height="18">
               <span class="me-2">IKZZZZZZZZZZZZZZZZZZZZ</span>
             </div>
           </div>
@@ -271,6 +310,7 @@ onMounted(() => {
   align-items: center;
   display: flex;
 }
+
 .vjs-theme-youtube .vjs-playing .vjs-icon-placeholder::before {
   content: "■" !important;
   font-size: 2.4em;
@@ -310,13 +350,14 @@ onMounted(() => {
   content: "settings";
   font-size: 1.8em;
 }
+
 .vjs-theme-youtube .vjs-icon-mini-player::after {
   content: "branding_watermark";
   font-size: 1.8em;
 }
+
 .vjs-theme-youtube .vjs-icon-theater::after {
   content: "aspect_ratio";
   font-size: 1.8em;
 }
-
 </style>
