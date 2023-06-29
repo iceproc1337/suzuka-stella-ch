@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-        <loc>https://suzuka.stellach.com/</loc>
-        <lastmod>2023-06-01</lastmod>
+        <loc>https://suzuka.stellach.com</loc>
+        <lastmod>2023-06-29</lastmod>
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://suzuka.stellach.com/en" />
+        <xhtml:link
+            rel="alternate"
+            hreflang="ja"
+            href="https://suzuka.stellach.com/ja" />
     </url>
 </urlset>
