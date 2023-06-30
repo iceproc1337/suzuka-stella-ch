@@ -12,6 +12,7 @@ export default {
         "home.profile3": "【Height】154cm",
         "home.profile4": "【Likes】Singing, anime, games, drums, macaroons, shrimps, beef tongue",
         "home.profile5": "【Dislikes】Carrots",
-        "home.megalight": "めがらいと"
+        "home.megalight": "めがらいと",
+        "home.illustrator": "illustrator"
     }
 }
