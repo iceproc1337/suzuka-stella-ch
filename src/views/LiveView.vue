@@ -7,7 +7,7 @@ i18nStore.setLang("en");
 
 let { onMounted } = Vue;
 
-onMounted(() => {
+function setupVideoJsPlayer() {
   //Now setting up Player
   var player = videojs('player', {
     muted: true
@@ -148,12 +148,50 @@ onMounted(() => {
   player.getChild('controlBar').addChild('MiniPlayerButton', {}, 15);
   videojs.registerComponent('theaterButton', TheaterButton);
   player.getChild('controlBar').addChild('TheaterButton', {}, 16);
+}
 
+function loadScriptTag(id, src, integrity) {
+  return new Promise((resolve, reject) => {
+    if (document.getElementById(id)) return resolve(); // was already loaded
+    var scriptTag = document.createElement("script");
+    scriptTag.src = src;
+    scriptTag.id = id;
+    scriptTag.integrity = integrity;
+    scriptTag.crossOrigin = "anonymous";
+    document.getElementsByTagName('head')[0].appendChild(scriptTag);
+    scriptTag.onload = function(){
+      resolve(scriptTag);
+    }
+    scriptTag.onerror = function(){
+      reject(scriptTag);
+    }
+  })
+}
 
+onMounted(async () => {
+  await loadScriptTag("video-js", "https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video.min.js", "sha384-xOapVKf0v5CoOk/hvZ+tHVNIqWcwtrCouwlUHwJMGHO2qJrUBfS1CoTpZ9mF0E/a");
+  await loadScriptTag("video-js-youtube-plugin", "https://cdn.jsdelivr.net/npm/videojs-youtube@3.0.1/dist/Youtube.min.js", "sha384-vOLaPd6nUReyIgR5TDrMPqrdQXrd7z4zE0stQlGgWmFDX0KK+kogJnS+qpM8OXil");
+  setupVideoJsPlayer();
 });
 
 </script>
 <template>
+  <!-- non-blocking, preload CSS -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video-js.min.css"
+    integrity="sha384-rJdeIq+yGjo4ePy/Dog4rMs9LQTqvsXqrp/WefvZFWARKUZoGEsUVL80LST7ciLO" crossorigin="anonymous" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <!-- load CSS for users without javascript -->
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video-js.min.css"
+      integrity="sha384-rJdeIq+yGjo4ePy/Dog4rMs9LQTqvsXqrp/WefvZFWARKUZoGEsUVL80LST7ciLO" crossorigin="anonymous" />
+  </noscript>
+
   <div class="container-fluid p-4">
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-3 row-cols-xl-3">
       <div class="col col-lg-8 col-xl-9">
