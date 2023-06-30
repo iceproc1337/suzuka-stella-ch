@@ -7,7 +7,7 @@ let { RouterView } = VueRouter;
 
 <template>
   <div style="height: 58px; flex-shrink: 0;" class="d-block w-100"></div>
-  <nav id="navbar" class="navbar fixed-top navbar-expand-lg bg-white nav-shadow m-0 p-0">
+  <nav id="navbar" class="navbar fixed-top navbar-expand-lg bg-light nav-shadow m-0 p-0">
     <div class="container-fluid p-0 align-items-stretch">
       <div class="navbar-brand d-flex justify-content-center align-items-center m-0 p-0">
         <a class="btn btn-light py-1 px-2 me-2 h-100 rounded-0 d-flex justify-content-center align-items-center" href=".">
@@ -18,7 +18,7 @@ let { RouterView } = VueRouter;
           <span class="ms-2 fs-5 font-weight-bold bold-500">{{i18nStore.t("app.suzuka.stella")}}</span>
         </a>
       </div>
-      <button class="navbar-toggler p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
+      <button class="navbar-toggler btn btn-light p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
       data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@ let { RouterView } = VueRouter;
         <hr class="m-0" />
         <div class="d-flex align-items-center justify-content-center ms-auto me-2">
           <div class="dropdown fixed-width-dropdown my-2" style="width: 110px;">
-            <a class="btn dropdown-toggle fixed-width-dropdown" href="#" role="button" data-bs-toggle="dropdown"
+            <a class="btn btn-white dropdown-toggle fixed-width-dropdown" href="#" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <i class="bi bi-globe"></i> {{ i18nStore.t("app.lang") }}
             </a>
