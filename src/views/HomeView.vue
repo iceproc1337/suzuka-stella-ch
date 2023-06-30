@@ -14,7 +14,7 @@ const i18nStore = useI18nStore();
               alt="full body portrait of Suzuka Stella" width="546" height="864" />
           </div>
           <div class="col" style="flex-basis: 1;">
-            <div class="text-center pt-2 serif bold-600">
+            <div class="text-center pt-2 serif bold-500">
               <div class="fs-1">Suzuka Stella</div>
               <div class="fs-5">鈴花ステラ🔔</div>
             </div>

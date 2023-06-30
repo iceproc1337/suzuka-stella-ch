@@ -15,7 +15,7 @@ let { RouterView } = VueRouter;
             <img src="@/assets/img/suzu-castella.webp" alt="pixelated suzu castella icon" height="48" width="48"
               class="rounded-5" />
           </div>
-          <span class="ms-2 fs-5 font-weight-bold serif bold-600">{{i18nStore.t("app.suzuka.stella")}}</span>
+          <span class="ms-2 fs-5 font-weight-bold bold-500">{{i18nStore.t("app.suzuka.stella")}}</span>
         </a>
       </div>
       <button class="navbar-toggler p-0 m-2" style="width: 48px; height: 42px; z-index: 1;" type="button"
