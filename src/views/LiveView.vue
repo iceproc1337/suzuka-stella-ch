@@ -1,10 +1,21 @@
 <script setup>
 import { useI18nStore } from "@/stores/i18n";
+import chat from "@/assets/chat/lv5Sw-VtmzM-parsed.json";
 
 const i18nStore = useI18nStore();
 i18nStore.setLang("en");
 
-let { onMounted } = Vue;
+let { onMounted, reactive } = Vue;
+let pageReactive = reactive({ chatList: [] });
+let parsedChat = chat.map((item) => {
+  if (item.emotes) {
+    for (let emote of item.emotes) {
+      item.message = item.message.replaceAll(emote.name, `<img src="/${emote.url}">`);
+    }
+  }
+  return item;
+})
+pageReactive.chatList.push(...parsedChat);
 
 function setupVideoJsPlayer() {
   //Now setting up Player
@@ -158,10 +169,10 @@ function loadScriptTag(id, src, integrity) {
     scriptTag.integrity = integrity;
     scriptTag.crossOrigin = "anonymous";
     document.getElementsByTagName('head')[0].appendChild(scriptTag);
-    scriptTag.onload = function(){
+    scriptTag.onload = function () {
       resolve(scriptTag);
     }
-    scriptTag.onerror = function(){
+    scriptTag.onerror = function () {
       reject(scriptTag);
     }
   })
@@ -170,8 +181,17 @@ function loadScriptTag(id, src, integrity) {
 onMounted(async () => {
   await loadScriptTag("video-js", "https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video.min.js", "sha384-xOapVKf0v5CoOk/hvZ+tHVNIqWcwtrCouwlUHwJMGHO2qJrUBfS1CoTpZ9mF0E/a");
   await loadScriptTag("video-js-youtube-plugin", "https://cdn.jsdelivr.net/npm/videojs-youtube@3.0.1/dist/Youtube.min.js", "sha384-vOLaPd6nUReyIgR5TDrMPqrdQXrd7z4zE0stQlGgWmFDX0KK+kogJnS+qpM8OXil");
+  await loadScriptTag("clusterize-js", "https://cdn.jsdelivr.net/npm/clusterize.js@1.0.0/clusterize.min.js", "sha384-G2Jussyj3rfkM+IYpQIVTW3qlGESWsGHN3gZoQHY118v3f1nTjbvb+bJgU61l1fd");
+
   setupVideoJsPlayer();
+
+  var clusterize = new Clusterize({
+    scrollId: 'scrollArea',
+    contentId: 'contentArea'
+  });
 });
+
+let isLive = false;
 
 </script>
 <template>
@@ -182,6 +202,9 @@ onMounted(async () => {
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video-js.min.css"
     integrity="sha384-rJdeIq+yGjo4ePy/Dog4rMs9LQTqvsXqrp/WefvZFWARKUZoGEsUVL80LST7ciLO" crossorigin="anonymous" as="style"
     onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/clusterize.js@1.0.0/clusterize.css"
+    integrity="sha384-rnqKTaBQU6DL5cu2Db0+Ce+56QvvU1oxEaqE2zd49VJR1aBcXZ2GwBsPw3jBtfVX" crossorigin="anonymous" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
   <!-- load CSS for users without javascript -->
   <noscript>
     <link rel="stylesheet"
@@ -189,15 +212,34 @@ onMounted(async () => {
       crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@8.3.0/dist/video-js.min.css"
       integrity="sha384-rJdeIq+yGjo4ePy/Dog4rMs9LQTqvsXqrp/WefvZFWARKUZoGEsUVL80LST7ciLO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/clusterize.js@1.0.0/clusterize.css"
+      integrity="sha384-rnqKTaBQU6DL5cu2Db0+Ce+56QvvU1oxEaqE2zd49VJR1aBcXZ2GwBsPw3jBtfVX" crossorigin="anonymous" />
   </noscript>
 
   <div class="container-fluid p-4">
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-3 row-cols-xl-3">
       <div class="col col-lg-8 col-xl-9">
-        <div class="aspect-ratio-wrapper mb-3">
+        <div class="aspect-ratio-wrapper mb-3 position-relative">
           <video id="player" class="video-js vjs-big-play-centered vjs-theme-youtube" controls preload="auto"
             fluid="true">
           </video>
+          <img v-if="!isLive" class="position-absolute h-100 w-100" src="https://i.ytimg.com/vi/lv5Sw-VtmzM/maxresdefault.jpg" style="top: 0; left: 0;" />
+          <div v-if="!isLive"
+            class="position-absolute d-flex justify-content-center align-items-center p-2 rounded-3 bg-dark text-white opacity-85"
+            style="bottom: 10px; left: 10px;">
+            <span class="material-symbols-outlined px-2 fs-3 ms-1">
+              sensors
+            </span>
+            <div class="mx-2" style="min-width: 180px;">
+              <div class="fs-7">36:28</div>
+              <div class="fs-8">7月8日 晚上23:00</div>
+            </div>
+            <button class="btn btn-secondary d-flex align-items-center ps-2 me-1">
+              <span class="material-symbols-outlined me-2">
+                notifications
+              </span>
+              Notify me</button>
+          </div>
         </div>
         <div>
           <h1 class="fs-5 fw-bold">【オリジナル曲】七色ジェット彗星【鈴花ステラ/めがらいと】</h1>
@@ -267,16 +309,27 @@ onMounted(async () => {
               <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24"> AU$100.00
             </button>
           </div>
-          <div class="chat-list flex-grow-1 overflow-y-scroll ps-2">
-            <div class="d-flex flex-row align-items-center ps-2 my-1" v-for="i in 20">
-              <img class="rounded-5 bg-white me-2" src="@/assets/logo.svg" width="24" height="24">
-              <span class="">AU$100.00</span>
-              <img class="me-2" src="@/assets/logo.svg" width="18" height="18">
-              <span class="me-2">IKZZZZZZZZZZZZZZZZZZZZ</span>
+          <div id="scrollArea" class="clusterize-scroll chat-list flex-grow-1 overflow-y-scroll px-2"
+            style="max-height: unset;">
+            <div id="contentArea" class="clusterize-content">
+              <div class="d-flex flex-row align-items-center ps-2 my-1"
+                v-for="{ author, message } of pageReactive.chatList">
+                <img class="rounded-5 bg-white me-2" :src="`/author/${author.id}.jpg`" width="24" height="24">
+                <span style="word-break: break-all;">
+                  <span class="text-black-50">{{ author.name }}</span>
+                  <span v-html="message" class="chat-message ms-2"></span>
+                </span>
+              </div>
             </div>
+            <!--
+            <div class="d-flex flex-row align-items-center ps-2 my-1" v-for="chat of pageReactive.chatList">
+              <img class="rounded-5 bg-white me-2" :src="`/author/${chat.author.id}.jpg`" width="24" height="24">
+              <span class="text-black-50">{{ chat.author.name }}</span>
+              <span class="ms-2">message</span>
+            </div>
+            -->
           </div>
           <div class="flex-shrink-0">
-
           </div>
         </div>
       </div>
@@ -396,5 +449,21 @@ onMounted(async () => {
 .vjs-theme-youtube .vjs-icon-theater::after {
   content: "aspect_ratio";
   font-size: 1.8em;
+}
+
+.chat-message img {
+  height: 17px;
+}
+
+.fs-7 {
+  font-size: 0.9em;
+}
+
+.fs-8 {
+  font-size: 0.8em;
+}
+
+.opacity-85 {
+  opacity: 85%;
 }
 </style>

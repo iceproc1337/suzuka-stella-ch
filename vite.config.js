@@ -23,7 +23,8 @@ export default defineConfig({
           VueRouter: "VueRouter",
           VueDemi: "VueDemi",
           VueI18n: "VueI18n",
-          Pinia: "Pinia"
+          Pinia: "Pinia",
+          VueVirtualScroller: "VueVirtualScroller"
         }
       }
     }
