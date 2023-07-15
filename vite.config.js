@@ -11,13 +11,11 @@ export default defineConfig({
   plugins: [
     vue(),
     viteExternalsPlugin({
-      videojs: 'video-js',
-      vue: "Vue",
-      VueRouter: "VueRouter",
-      VueDemi: "VueDemi",
-      VueI18n: "VueI18n",
-      Pinia: "Pinia",
-      VueVirtualScroller: "VueVirtualScroller"
+      // "video.js": 'videojs',
+      "vue": "Vue",
+      "vue-router": "VueRouter",
+      "vue-i18n": "VueI18n",
+      "pinia": "Pinia"
     })
   ],
   resolve: {

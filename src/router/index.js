@@ -1,4 +1,4 @@
-let { createRouter, createWebHistory } = VueRouter;
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(),

@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted, reactive, computed, watch, ref } from 'vue';
 import { useI18nStore } from "@/stores/i18n";
 import { loadScriptTag } from "@/assets/util.js"
 import VideoJsPlayer from "../components/VideoJsPlayer.vue";
@@ -9,7 +10,6 @@ import chat from "@/assets/chat/lv5Sw-VtmzM-parsed.json";
 const i18nStore = useI18nStore();
 i18nStore.setLang("en");
 
-let { onMounted, reactive, computed, watch, ref } = Vue;
 let pageReactive = reactive({
   chatList: [],
   dateNow: new Date()

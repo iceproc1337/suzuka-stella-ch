@@ -1,4 +1,5 @@
-let { defineStore } = Pinia;
+import { defineStore } from "pinia";
+import { createI18n } from "vue-i18n";
 
 export const useI18nStore = defineStore('i18n', {
   state: () => ({
@@ -11,7 +12,7 @@ export const useI18nStore = defineStore('i18n', {
       if (!this.isLangLoaded(lang)) {
         let messages = (await import(`@/assets/i18n/${lang}.js`)).default;
         console.debug("messages loaded=", messages)
-        let i18n = VueI18n.createI18n({
+        let i18n = createI18n({
           locale: lang, // set locale
           messages, // set locale messages
         })

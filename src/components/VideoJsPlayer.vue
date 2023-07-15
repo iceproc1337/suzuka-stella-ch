@@ -1,8 +1,8 @@
 <script setup>
 import { loadScriptTag } from "@/assets/util.js"
 import InlinePreloadCss from "./InlinePreloadCss.vue";
+import { onMounted, reactive, watch } from "vue";
 
-let { onMounted, reactive, watch } = Vue;
 let pageReactive = reactive({
     player: null
 })
