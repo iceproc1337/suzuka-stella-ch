@@ -2,7 +2,6 @@
 import { useI18nStore } from "@/stores/i18n";
 import { loadScriptTag } from "@/assets/util.js"
 import VideoJsPlayer from "../components/VideoJsPlayer.vue";
-import TestComponent from "../components/TestComponent.vue";
 import InlinePreloadCss from "../components/InlinePreloadCss.vue";
 
 import chat from "@/assets/chat/lv5Sw-VtmzM-parsed.json";
@@ -13,9 +12,9 @@ i18nStore.setLang("en");
 let { onMounted, reactive, computed, watch, ref } = Vue;
 let pageReactive = reactive({
   chatList: [],
-  dateNow: 0,
-  isPlaying: false,
+  dateNow: new Date()
 });
+let playerRef = ref(null);
 
 let parsedChat = chat.map((item) => {
   if (item.emotes) {
@@ -36,15 +35,9 @@ onMounted(() => {
     });
   })();
 
-  /*
   let dateNowInterval = setInterval(function () {
     pageReactive.dateNow = new Date();
   }.bind(this), 1000);
-  */
- window.pageReactive = pageReactive;
-
-  let player = document.getElementById("player-component");
-  console.log("player", player);
 });
 
 let schedule = [
@@ -54,7 +47,7 @@ let schedule = [
   }
 ];
 
-schedule[0].actualStartTime = new Date("2023-07-15T10:41:29Z")
+schedule[0].actualStartTime = new Date("2023-07-15T15:35:29Z")
 
 let intlDateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: 'long', timeStyle: 'medium' });
 
@@ -110,8 +103,9 @@ const exactStartTimeLabel = computed(() => {
 
 
 watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
+  let player = playerRef.value;
   if (newIsLiveStarted) {
-    pageReactive.isPlaying = true;
+    player.play();
   }
 })
 
@@ -123,12 +117,11 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
   </InlinePreloadCss>
   <InlinePreloadCss href="https://cdn.jsdelivr.net/npm/clusterize.js@1.0.0/clusterize.css"
     integrity="sha384-rnqKTaBQU6DL5cu2Db0+Ce+56QvvU1oxEaqE2zd49VJR1aBcXZ2GwBsPw3jBtfVX"></InlinePreloadCss>
-<TestComponent ref="wtf"></TestComponent>
   <div class="container-fluid p-4">
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-3 row-cols-xl-3">
       <div class="col col-lg-8 col-xl-9">
         <div class="aspect-ratio-wrapper mb-3 position-relative">
-          <VideoJsPlayer id="player-component" :isPlaying="pageReactive.isPlaying"></VideoJsPlayer>
+          <VideoJsPlayer ref="playerRef"></VideoJsPlayer>
           <img v-if="!isLiveStarted" class="position-absolute h-100 w-100"
             src="https://i.ytimg.com/vi/lv5Sw-VtmzM/maxresdefault.jpg" style="top: 0; left: 0;" />
           <div v-if="!isLiveStarted"

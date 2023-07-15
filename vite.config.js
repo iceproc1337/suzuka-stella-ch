@@ -1,32 +1,28 @@
 import { fileURLToPath, URL } from 'node:url'
-const { resolve } = require('path')
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+// tell vite to use externals
+import { viteExternalsPlugin } from 'vite-plugin-externals'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue()
+    vue(),
+    viteExternalsPlugin({
+      videojs: 'video-js',
+      vue: "Vue",
+      VueRouter: "VueRouter",
+      VueDemi: "VueDemi",
+      VueI18n: "VueI18n",
+      Pinia: "Pinia",
+      VueVirtualScroller: "VueVirtualScroller"
+    })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        globals: {
-          videojs: 'video-js',
-          Vue: "Vue",
-          VueRouter: "VueRouter",
-          VueDemi: "VueDemi",
-          VueI18n: "VueI18n",
-          Pinia: "Pinia",
-          VueVirtualScroller: "VueVirtualScroller"
-        }
-      }
     }
   }
 })

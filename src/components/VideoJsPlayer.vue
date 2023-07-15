@@ -3,9 +3,6 @@ import { loadScriptTag } from "@/assets/util.js"
 import InlinePreloadCss from "./InlinePreloadCss.vue";
 
 let { onMounted, reactive, watch } = Vue;
-let props = defineProps({
-    isPlaying: Boolean
-})
 let pageReactive = reactive({
     player: null
 })
@@ -162,12 +159,6 @@ onMounted(async () => {
 
     let player = setupVideoJsPlayer();
     pageReactive.player = player;
-});
-
-watch(() => props.isPlaying, (newIsPlaying, oldIsPlaying) => {
-    if (newIsPlaying) {
-        pageReactive.player.play();
-    }
 });
 
 function play() {
