@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, computed, watch, ref } from 'vue';
+import { onMounted, reactive, computed, watch, ref, nextTick } from 'vue';
 import { useI18nStore } from "@/stores/i18n";
 import { loadScriptTag } from "@/assets/util.js"
 import VideoJsPlayer from "../components/VideoJsPlayer.vue";
@@ -15,6 +15,8 @@ let pageReactive = reactive({
   dateNow: new Date()
 });
 let playerRef = ref(null);
+let scrollAreaRef = ref(null);
+let clusterize = null;
 
 let parsedChat = chat.map((item) => {
   if (item.emotes) {
@@ -25,19 +27,31 @@ let parsedChat = chat.map((item) => {
   return item;
 })
 
+let isScrollLocked = true;
 onMounted(() => {
   (async () => {
     await loadScriptTag("clusterize-js", "https://cdn.jsdelivr.net/npm/clusterize.js@1.0.0/clusterize.min.js", "sha384-G2Jussyj3rfkM+IYpQIVTW3qlGESWsGHN3gZoQHY118v3f1nTjbvb+bJgU61l1fd");
-
-    var clusterize = new Clusterize({
-      scrollId: 'scrollArea',
-      contentId: 'contentArea'
-    });
+    /*
+        clusterize = new Clusterize({
+          scrollId: 'scrollArea',
+          contentId: 'contentArea'
+        });
+        */
   })();
 
   let dateNowInterval = setInterval(function () {
     pageReactive.dateNow = new Date();
+
+    let scrollArea = scrollAreaRef.value;
+    if (scrollArea.scrollTop == scrollArea.scrollHeight - scrollArea.offsetHeight) {
+      isScrollLocked = true;
+      console.log("Set isScrollLocked = true")
+    } else {
+      isScrollLocked = false;
+    }
   }.bind(this), 1000);
+
+  setScrollAreaToBottom();
 });
 
 let schedule = [
@@ -47,7 +61,7 @@ let schedule = [
   }
 ];
 
-schedule[0].actualStartTime = new Date("2023-07-15T15:35:29Z")
+schedule[0].actualStartTime = new Date("2023-07-17T09:02:29Z")
 
 let intlDateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: 'long', timeStyle: 'medium' });
 
@@ -70,12 +84,24 @@ const nextVideo = computed(() => {
   return schedule[0];
 });
 
-const isLiveStarted = computed(() => {
-  return pageReactive.dateNow - nextVideo.value.actualStartTime > 0;
+const nextVideoStartTime = computed(() => {
+  return nextVideo.value.actualStartTime;
 });
 
+const isLiveStarted = computed(() => {
+  return pageReactive.dateNow - nextVideoStartTime.value > 0;
+});
+
+const currentPlayTime = computed(() => {
+  return pageReactive.dateNow - nextVideoStartTime.value;
+})
+
+const currentChatIndex = computed(() => {
+  return chat.findIndex((chatObj) => chatObj.timestamp > currentPlayTime.value);
+})
+
 const timeToStartLabel = computed(() => {
-  let differenceInDate = nextVideo.value.actualStartTime - pageReactive.dateNow;
+  let differenceInDate = nextVideoStartTime.value - pageReactive.dateNow;
   let differenceInDays = parseInt(Math.floor(differenceInDate / (1000 * 60 * 60 * 24)));
   if (differenceInDays >= 1) {
     return `Live in ${differenceInDays} days`
@@ -98,7 +124,7 @@ const timeToStartLabel = computed(() => {
 })
 
 const exactStartTimeLabel = computed(() => {
-  return intlDateFormatter.format(nextVideo.value.actualStartTime);
+  return intlDateFormatter.format(nextVideoStartTime.value);
 });
 
 
@@ -108,6 +134,30 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
     player.play();
   }
 })
+
+function setScrollAreaToBottom() {
+  let scrollArea = scrollAreaRef.value;
+  scrollArea.scrollTop = scrollArea.scrollHeight;
+}
+
+watch(currentChatIndex, (newCurrentChatIndex) => {
+  pageReactive.chatList.splice(0, pageReactive.chatList.length);
+  if (newCurrentChatIndex > -1) {
+    let chatSlice = chat.slice(Math.max(0, newCurrentChatIndex - 40), newCurrentChatIndex);
+    for (let i = 0; i < chatSlice.length; i++) {
+      pageReactive.chatList.push(chatSlice[i]);
+    }
+  }
+
+  /// clusterize.refresh(true);
+  if (isScrollLocked) {
+    nextTick(() => {
+      setScrollAreaToBottom();
+    });
+  }
+});
+
+window.setScrollAreaToBottom = setScrollAreaToBottom;
 
 </script>
 <template>
@@ -121,7 +171,7 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-3 row-cols-xl-3">
       <div class="col col-lg-8 col-xl-9">
         <div class="aspect-ratio-wrapper mb-3 position-relative">
-          <VideoJsPlayer ref="playerRef"></VideoJsPlayer>
+          <VideoJsPlayer ref="playerRef" :startTime="nextVideoStartTime"></VideoJsPlayer>
           <img v-if="!isLiveStarted" class="position-absolute h-100 w-100"
             src="https://i.ytimg.com/vi/lv5Sw-VtmzM/maxresdefault.jpg" style="top: 0; left: 0;" />
           <div v-if="!isLiveStarted"
@@ -182,7 +232,7 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
         </div>
       </div>
       <div class="col col-lg-4 col-xl-3">
-        <div class="d-flex flex-column bg-warning rounded" style="height: 640px;">
+        <div class="d-flex flex-column rounded" style="height: 640px;">
           <div class="d-flex flex-shrink-0 justify-content-between p-1">
             <div class="dropdown">
               <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -209,11 +259,12 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
               <img class="rounded-5 bg-white" src="@/assets/logo.svg" width="24" height="24"> AU$100.00
             </button>
           </div>
-          <div id="scrollArea" class="clusterize-scroll chat-list flex-grow-1 overflow-y-scroll px-2"
+          <div ref="scrollAreaRef" id="scrollArea" class="clusterize-scroll chat-list flex-grow-1 overflow-y-scroll px-2"
             style="max-height: unset;">
             <div id="contentArea" class="clusterize-content">
+              <!-- v-for="{ author, message } of chat.slice(Math.max(0, currentChatIndex - 40), currentChatIndex)" -->
               <div class="d-flex flex-row align-items-center ps-2 my-1"
-                v-for="{ author, message } of pageReactive.chatList">
+                v-for="({ author, message, index }) in pageReactive.chatList" :key="`chat-index-${index}`">
                 <img class="rounded-5 bg-white me-2" :src="`/author/${author.id}.jpg`" width="24" height="24">
                 <span style="word-break: break-all;">
                   <span class="text-black-50">{{ author.name }}</span>
@@ -240,115 +291,6 @@ watch(isLiveStarted, async (newIsLiveStarted, oldIsLiveStarted) => {
 <style>
 .aspect-ratio-wrapper {
   aspect-ratio: 16 / 9;
-}
-
-/* Change all text and icon colors in the player. */
-.vjs-theme-youtube.video-js {
-  font-size: 100%;
-}
-
-.vjs-theme-youtube.video-js .vjs-control-bar {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.vjs-theme-youtube.video-js .vjs-button {
-  width: 3.8em;
-}
-
-.vjs-theme-youtube.video-js .vjs-control-bar::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -4px;
-  height: 4px;
-  width: calc(100% - 24px);
-  margin-left: 12px;
-  margin-right: 12px;
-  background-color: red;
-  z-index: 1;
-}
-
-/* Change the border of the big play button. */
-.vjs-theme-youtube .vjs-big-play-button {}
-
-/* Change the color of various "bars". */
-.vjs-theme-youtube .vjs-volume-level,
-.vjs-theme-youtube .vjs-play-progress,
-.vjs-theme-youtube .vjs-slider-bar {}
-
-/*
-.vjs-theme-youtube .vjs-progress-control::before {
-  content: '• Live';
-  display: inline-block;
-  width: 50px;
-  justify-content: center;
-  align-items: center;
-  margin-right: 4px;
-}
-*/
-
-.vjs-theme-youtube .vjs-progress-holder {
-  display: none;
-}
-
-.vjs-theme-youtube .vjs-remaining-time {
-  display: none;
-}
-
-.vjs-theme-youtube .vjs-playing {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
-.vjs-theme-youtube .vjs-playing .vjs-icon-placeholder::before {
-  content: "■" !important;
-  font-size: 2.4em;
-  line-height: 0.8em;
-}
-
-.vjs-theme-youtube .vjs-icon-next::after {
-  content: "skip_next";
-  font-size: 1.8em;
-}
-
-.vjs-theme-youtube .vjs-icon-live::before {
-  content: '•';
-  position: absolute;
-  top: 15px;
-  left: 6px;
-  color: red;
-  font-size: 20px;
-}
-
-.vjs-theme-youtube .vjs-icon-live::after {
-  content: "Live";
-}
-
-.vjs-theme-youtube .vjs-icon-autoplay::after {
-  content: "toggle_on";
-  font-size: 1.8em;
-}
-
-.vjs-theme-youtube .vjs-icon-caption::after {
-  content: "subtitles";
-  font-size: 1.8em;
-  opacity: 0.5;
-}
-
-.vjs-theme-youtube .vjs-icon-settings::after {
-  content: "settings";
-  font-size: 1.8em;
-}
-
-.vjs-theme-youtube .vjs-icon-mini-player::after {
-  content: "branding_watermark";
-  font-size: 1.8em;
-}
-
-.vjs-theme-youtube .vjs-icon-theater::after {
-  content: "aspect_ratio";
-  font-size: 1.8em;
 }
 
 .chat-message img {

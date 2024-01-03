@@ -1,7 +1,15 @@
 <script setup>
 import { loadScriptTag } from "@/assets/util.js"
 import InlinePreloadCss from "./InlinePreloadCss.vue";
-import { onMounted, reactive, watch } from "vue";
+import { onMounted, reactive, computed } from "vue";
+
+let props = defineProps({
+    startTime: { type: Date, required: true }
+});
+
+let startTime = computed(() => {
+    return props.startTime;
+});
 
 let pageReactive = reactive({
     player: null
@@ -19,14 +27,12 @@ function setupVideoJsPlayer() {
         myPlayer.controlBar.progressControl.disable()
     });
     let isCurrentTimeLoaded = false;
-    let startTime = new Date();
-    startTime.setHours(0, 0);
 
     player.on('play', function () {
         var myPlayer = this;
         if (!isCurrentTimeLoaded) {
             isCurrentTimeLoaded = true;
-            myPlayer.currentTime((new Date() - startTime) / 1000);
+            myPlayer.currentTime((new Date() - startTime.value) / 1000);
             myPlayer.muted(false);
         }
     });
@@ -179,3 +185,140 @@ defineExpose({
             fluid="true"></video>
     </div>
 </template>
+
+<style>
+/* Change all text and icon colors in the player. */
+.vjs-theme-youtube.video-js {
+    font-size: 100%;
+}
+
+.vjs-theme-youtube.video-js .vjs-control-bar {
+    background: linear-gradient(to top, #555, rgba(0, 0, 0, 0));
+}
+
+.vjs-theme-youtube.video-js .vjs-button {
+    width: 3.8em;
+}
+
+.vjs-theme-youtube.video-js .vjs-control-bar::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -4px;
+    height: 4px;
+    width: calc(100% - 24px);
+    margin-left: 12px;
+    margin-right: 12px;
+    background-color: red;
+    z-index: 1;
+}
+
+/* Change the border of the big play button. */
+.vjs-theme-youtube .vjs-big-play-button {
+    background-image: url("@/assets/img/youtube-button.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border: none !important;
+    background-color: unset !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    opacity: 0.8 !important;
+}
+
+/* TODO: enable spinner if big-play-button is not visible */
+.vjs-theme-youtube .vjs-loading-spinner {
+    display: none !important;
+}
+.vjs-theme-youtube .vjs-big-play-button:hover {
+    background-image: url("@/assets/img/youtube-button-active.png");
+}
+.vjs-theme-youtube .vjs-icon-placeholder {
+    display: none;
+}
+.vjs-theme-youtube .vjs-control-text {
+    display: none;
+}
+
+/* Change the color of various "bars". */
+.vjs-theme-youtube .vjs-volume-level,
+.vjs-theme-youtube .vjs-play-progress,
+.vjs-theme-youtube .vjs-slider-bar {}
+
+/*
+.vjs-theme-youtube .vjs-progress-control::before {
+  content: '• Live';
+  display: inline-block;
+  width: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+}
+*/
+
+.vjs-theme-youtube .vjs-progress-holder {
+    display: none;
+}
+
+.vjs-theme-youtube .vjs-remaining-time {
+    display: none;
+}
+
+.vjs-theme-youtube .vjs-playing {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.vjs-theme-youtube .vjs-playing .vjs-icon-placeholder::before {
+    content: "■" !important;
+    font-size: 2.4em;
+    line-height: 0.8em;
+}
+
+.vjs-theme-youtube .vjs-icon-next::after {
+    content: "skip_next";
+    font-size: 1.8em;
+}
+
+.vjs-theme-youtube .vjs-icon-live::before {
+    content: '•';
+    position: absolute;
+    top: 15px;
+    left: 6px;
+    color: red;
+    font-size: 20px;
+}
+
+.vjs-theme-youtube .vjs-icon-live::after {
+    content: "Live";
+}
+
+.vjs-theme-youtube .vjs-icon-autoplay::after {
+    content: "toggle_on";
+    font-size: 1.8em;
+}
+
+.vjs-theme-youtube .vjs-icon-caption::after {
+    content: "subtitles";
+    font-size: 1.8em;
+    opacity: 0.5;
+}
+
+.vjs-theme-youtube .vjs-icon-settings::after {
+    content: "settings";
+    font-size: 1.8em;
+}
+
+.vjs-theme-youtube .vjs-icon-mini-player::after {
+    content: "branding_watermark";
+    font-size: 1.8em;
+}
+
+.vjs-theme-youtube .vjs-icon-theater::after {
+    content: "aspect_ratio";
+    font-size: 1.8em;
+}
+</style>
